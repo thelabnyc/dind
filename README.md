@@ -1,3 +1,3 @@
 # Docker-in-Docker
 
-Just like [jpetazzo/dind](https://github.com/jpetazzo/dind), but also includes docker-compose.
+Image based on ubuntu:16.04 which includes docker, docker-compose, and git preinstalled.
