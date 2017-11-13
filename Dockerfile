@@ -4,6 +4,7 @@ FROM ubuntu:${UBUNTU_VERSION}
 # Install Python and misc utils
 RUN apt-get update && \
     apt-get install -y git wget unzip jq python3 python3-pip && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
     pip3 install --upgrade pip ipython pytz flake8
 
 # Install Docker client
