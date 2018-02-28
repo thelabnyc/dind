@@ -8,15 +8,16 @@ RUN apt-get update && \
     pip3 install --upgrade pip ipython pytz flake8
 
 # Install Docker client
- RUN apt-get update && \
+ARG DOCKER_VERSION=17.12.1~ce-0~ubuntu
+RUN apt-get update && \
      apt-get install -y apt-transport-https ca-certificates curl software-properties-common && \
      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
      apt-key fingerprint 0EBFCD88 && \
      add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
      apt-get update && \
-     apt-get install -y docker-ce && \
-     pip3 install docker-py
+     apt-get install -y docker-ce=${DOCKER_VERSION}
 
 # Install docker-compose
-RUN curl -L https://github.com/docker/compose/releases/download/1.17.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && \
+ARG COMPOSE_VERSION=1.19.0
+RUN curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && \
     chmod +x /usr/local/bin/docker-compose
