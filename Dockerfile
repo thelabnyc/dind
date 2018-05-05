@@ -1,5 +1,6 @@
+ARG BASE_IMAGE=ubuntu
 ARG UBUNTU_VERSION=16.04
-FROM ubuntu:${UBUNTU_VERSION}
+FROM ${BASE_IMAGE}:${UBUNTU_VERSION}
 
 # Install Python and misc utils
 RUN apt-get update && \

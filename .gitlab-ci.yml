@@ -1,0 +1,25 @@
+.build_job:
+  script: &build_job
+    - docker login -u "${CI_REGISTRY_USER}" -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
+    - docker pull "${BASE_IMAGE}:${UBUNTU_VERSION}"
+    - docker build --no-cache
+                   --build-arg BASE_IMAGE=$BASE_IMAGE
+                   --build-arg UBUNTU_VERSION=$UBUNTU_VERSION
+                   -t "${CI_REGISTRY_IMAGE}:${OUTPUT_TAG_NAME}" .
+    - docker push "$CI_REGISTRY_IMAGE:$OUTPUT_TAG_NAME"
+
+
+build_ubuntu1604:
+  variables:
+    BASE_IMAGE: ubuntu
+    UBUNTU_VERSION: "16.04"
+    OUTPUT_TAG_NAME: "16.04"
+  script: *build_job
+
+
+build_ubuntu1804:
+  variables:
+    BASE_IMAGE: ubuntu
+    UBUNTU_VERSION: "18.04"
+    OUTPUT_TAG_NAME: "18.04"
+  script: *build_job
