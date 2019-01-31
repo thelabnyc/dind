@@ -15,6 +15,8 @@
 
 
 build_ubuntu1604:
+  tags:
+    - docker-compose
   variables:
     BASE_IMAGE: ubuntu
     UBUNTU_VERSION: "16.04"
@@ -24,6 +26,8 @@ build_ubuntu1604:
 
 
 # build_ubuntu1804:
+#   tags:
+#     - docker-compose
 #   variables:
 #     BASE_IMAGE: ubuntu
 #     UBUNTU_VERSION: "18.04"
