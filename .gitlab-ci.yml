@@ -3,8 +3,10 @@
     - docker login -u "${CI_REGISTRY_USER}" -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
     - docker pull "${BASE_IMAGE}:${UBUNTU_VERSION}"
     - docker build --no-cache
-                   --build-arg BASE_IMAGE=$BASE_IMAGE
-                   --build-arg UBUNTU_VERSION=$UBUNTU_VERSION
+                   --build-arg BASE_IMAGE="$BASE_IMAGE"
+                   --build-arg UBUNTU_VERSION="$UBUNTU_VERSION"
+                   --build-arg DOCKER_VERSION="$DOCKER_VERSION"
+                   --build-arg COMPOSE_VERSION="$COMPOSE_VERSION"
                    -t "${CI_REGISTRY_IMAGE}:${OUTPUT_TAG_NAME}" .
     - docker push "$CI_REGISTRY_IMAGE:$OUTPUT_TAG_NAME"
     - for ALT_TAG in $ALT_TAG_NAMES;
