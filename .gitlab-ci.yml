@@ -35,8 +35,20 @@ build_ubuntu1804:
   variables:
     BASE_IMAGE: ubuntu
     UBUNTU_VERSION: "18.04"
-    DOCKER_VERSION: "5:18.09.1~3-0~ubuntu-bionic"
-    COMPOSE_VERSION: "1.23.2"
+    DOCKER_VERSION: "5:20.10.2~3-0~ubuntu-bionic"
+    COMPOSE_VERSION: "1.27.0"
     OUTPUT_TAG_NAME: "18.04"
-    ALT_TAG_NAMES: "bionic latest"
+    ALT_TAG_NAMES: "bionic"
+  script: *build_job
+
+build_ubuntu2004:
+  tags:
+    - docker-compose
+  variables:
+    BASE_IMAGE: ubuntu
+    UBUNTU_VERSION: "20.04"
+    DOCKER_VERSION: "5:20.10.2~3-0~ubuntu-focal"
+    COMPOSE_VERSION: "1.27.0"
+    OUTPUT_TAG_NAME: "20.04"
+    ALT_TAG_NAMES: "focal latest"
   script: *build_job
