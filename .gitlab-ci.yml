@@ -1,54 +1,51 @@
-.build_job:
-  script: &build_job
+variables:
+  PLATFORMS: "linux/arm64/v8,linux/amd64"
+  COMPOSE_VERSION: "1.29.2"
+
+
+build:
+  image: docker:latest
+  services:
+    - docker:dind
+
+  script:
     - docker login -u "${CI_REGISTRY_USER}" -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
-    - docker pull "${BASE_IMAGE}:${UBUNTU_VERSION}"
-    - docker build --no-cache
-                   --build-arg BASE_IMAGE="$BASE_IMAGE"
-                   --build-arg UBUNTU_VERSION="$UBUNTU_VERSION"
-                   --build-arg DOCKER_VERSION="$DOCKER_VERSION"
-                   --build-arg COMPOSE_VERSION="$COMPOSE_VERSION"
-                   -t "${CI_REGISTRY_IMAGE}:${OUTPUT_TAG_NAME}" .
-    - docker push "$CI_REGISTRY_IMAGE:$OUTPUT_TAG_NAME"
-    - for ALT_TAG in $ALT_TAG_NAMES;
-      do
-        docker tag "${CI_REGISTRY_IMAGE}:${OUTPUT_TAG_NAME}" "${CI_REGISTRY_IMAGE}:${ALT_TAG}";
-        docker push "${CI_REGISTRY_IMAGE}:${ALT_TAG}";
-      done
+    - docker pull "${BASE_IMAGE}:${PYTHON_VERSION}" || true
 
+    # Create a buildx instance if one doesn't already exist
+    - if [ "$(docker buildx ls | grep docker-container  | wc -l)" -le "0" ]; then
+        docker buildx create --use;
+      fi
 
-build_ubuntu1604:
-  tags:
-    - docker-compose
-  variables:
-    BASE_IMAGE: ubuntu
-    UBUNTU_VERSION: "16.04"
-    DOCKER_VERSION: "18.03.1~ce-0~ubuntu"
-    COMPOSE_VERSION: "1.21.2"
-    OUTPUT_TAG_NAME: "16.04"
-    ALT_TAG_NAMES: "xenial"
-  script: *build_job
+    - docker buildx build
+        --platform "$PLATFORMS"
+        --pull
+        --build-arg BASE_IMAGE="$BASE_IMAGE"
+        --build-arg UBUNTU_VERSION="$UBUNTU_VERSION"
+        --build-arg DOCKER_VERSION="$DOCKER_VERSION"
+        --build-arg COMPOSE_VERSION="$COMPOSE_VERSION"
+        --cache-from "${CI_REGISTRY_IMAGE}:${OUTPUT_TAG_NAME}"
+        --tag "${CI_REGISTRY_IMAGE}:${OUTPUT_TAG_NAME}"
+        $EXTRA_BUILD_ARGS
+        --push
+        .
 
+  parallel:
+    matrix:
+      - BASE_IMAGE: ubuntu
+        UBUNTU_VERSION: "18.04"
+        DOCKER_VERSION: "5:20.10.17~3-0~ubuntu-bionic"
+        OUTPUT_TAG_NAME: "18.04"
+        EXTRA_BUILD_ARGS: "--tag ${CI_REGISTRY_IMAGE}:bionic"
 
-build_ubuntu1804:
-  tags:
-    - docker-compose
-  variables:
-    BASE_IMAGE: ubuntu
-    UBUNTU_VERSION: "18.04"
-    DOCKER_VERSION: "5:20.10.2~3-0~ubuntu-bionic"
-    COMPOSE_VERSION: "1.28.4"
-    OUTPUT_TAG_NAME: "18.04"
-    ALT_TAG_NAMES: "bionic"
-  script: *build_job
+      - BASE_IMAGE: ubuntu
+        UBUNTU_VERSION: "20.04"
+        DOCKER_VERSION: "5:20.10.17~3-0~ubuntu-focal"
+        OUTPUT_TAG_NAME: "20.04"
+        EXTRA_BUILD_ARGS: "--tag ${CI_REGISTRY_IMAGE}:focal --tag ${CI_REGISTRY_IMAGE}:latest"
 
-build_ubuntu2004:
-  tags:
-    - docker-compose
-  variables:
-    BASE_IMAGE: ubuntu
-    UBUNTU_VERSION: "20.04"
-    DOCKER_VERSION: "5:20.10.2~3-0~ubuntu-focal"
-    COMPOSE_VERSION: "1.28.4"
-    OUTPUT_TAG_NAME: "20.04"
-    ALT_TAG_NAMES: "focal latest"
-  script: *build_job
+      # - BASE_IMAGE: ubuntu
+      #   UBUNTU_VERSION: "22.04"
+      #   DOCKER_VERSION: "5:20.10.17~3-0~ubuntu-jammy"
+      #   OUTPUT_TAG_NAME: "22.04"
+      #   EXTRA_BUILD_ARGS: "--tag ${CI_REGISTRY_IMAGE}:jammy --tag ${CI_REGISTRY_IMAGE}:latest"
