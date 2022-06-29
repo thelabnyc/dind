@@ -4,7 +4,6 @@ FROM ${BASE_IMAGE}:${UBUNTU_VERSION}
 
 ARG TIMEZONE="America/New_York"
 ARG DOCKER_VERSION
-ARG COMPOSE_VERSION
 
 # =========================================================================
 # Install Python and misc utils

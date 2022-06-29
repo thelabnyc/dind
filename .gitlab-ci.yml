@@ -1,6 +1,5 @@
 variables:
   PLATFORMS: "linux/arm64/v8,linux/amd64"
-  COMPOSE_VERSION: "1.29.2"
 
 
 build:

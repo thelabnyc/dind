@@ -51,7 +51,6 @@ echoAndRun docker buildx build \
     --build-arg BASE_IMAGE="$BASE_IMAGE" \
     --build-arg UBUNTU_VERSION="$UBUNTU_VERSION" \
     --build-arg DOCKER_VERSION="$DOCKER_VERSION" \
-    --build-arg COMPOSE_VERSION="$COMPOSE_VERSION" \
     $CACHE_FROM \
     --tag "${CI_REGISTRY_IMAGE:-dind}:${OUTPUT_TAG_NAME}" \
     $EXTRA_BUILD_ARGS \
