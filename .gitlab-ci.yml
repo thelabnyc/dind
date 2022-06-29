@@ -10,25 +10,11 @@ build:
 
   script:
     - docker login -u "${CI_REGISTRY_USER}" -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
-    - docker pull "${BASE_IMAGE}:${PYTHON_VERSION}" || true
-
-    # Create a buildx instance if one doesn't already exist
-    - if [ "$(docker buildx ls | grep docker-container  | wc -l)" -le "0" ]; then
-        docker buildx create --use;
-      fi
-
-    - docker buildx build
-        --platform "$PLATFORMS"
-        --pull
-        --build-arg BASE_IMAGE="$BASE_IMAGE"
-        --build-arg UBUNTU_VERSION="$UBUNTU_VERSION"
-        --build-arg DOCKER_VERSION="$DOCKER_VERSION"
-        --build-arg COMPOSE_VERSION="$COMPOSE_VERSION"
-        --cache-from "${CI_REGISTRY_IMAGE}:${OUTPUT_TAG_NAME}"
-        --tag "${CI_REGISTRY_IMAGE}:${OUTPUT_TAG_NAME}"
-        $EXTRA_BUILD_ARGS
-        --push
-        .
+    # Install QEMU emulation support in the kernel
+    # See: https://docs.docker.com/buildx/working-with-buildx/#build-multi-platform-images
+    - docker run --privileged --rm tonistiigi/binfmt --install all
+    # Build and push images
+    - ./bin/build.sh
 
   parallel:
     matrix:
@@ -42,10 +28,15 @@ build:
         UBUNTU_VERSION: "20.04"
         DOCKER_VERSION: "5:20.10.17~3-0~ubuntu-focal"
         OUTPUT_TAG_NAME: "20.04"
-        EXTRA_BUILD_ARGS: "--tag ${CI_REGISTRY_IMAGE}:focal --tag ${CI_REGISTRY_IMAGE}:latest"
+        EXTRA_BUILD_ARGS: >-
+          --tag ${CI_REGISTRY_IMAGE}:focal
+          --push
 
-      # - BASE_IMAGE: ubuntu
-      #   UBUNTU_VERSION: "22.04"
-      #   DOCKER_VERSION: "5:20.10.17~3-0~ubuntu-jammy"
-      #   OUTPUT_TAG_NAME: "22.04"
-      #   EXTRA_BUILD_ARGS: "--tag ${CI_REGISTRY_IMAGE}:jammy --tag ${CI_REGISTRY_IMAGE}:latest"
+      - BASE_IMAGE: ubuntu
+        UBUNTU_VERSION: "22.04"
+        DOCKER_VERSION: "5:20.10.17~3-0~ubuntu-jammy"
+        OUTPUT_TAG_NAME: "22.04"
+        EXTRA_BUILD_ARGS: >-
+          --tag ${CI_REGISTRY_IMAGE}:jammy
+          --tag ${CI_REGISTRY_IMAGE}:latest
+          --push
