@@ -60,8 +60,4 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 # =========================================================================
 # Install docker-compose v1
 # =========================================================================
-RUN curl -L \
-        "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -m)-$(uname -m)" \
-        > /usr/local/bin/docker-compose \
-    && \
-    chmod +x /usr/local/bin/docker-compose
+RUN python3 -m pip install 'docker-compose>=1.28.4,<2.0'
