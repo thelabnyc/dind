@@ -9,6 +9,7 @@ build:
 
   script:
     - docker login -u "${CI_REGISTRY_USER}" -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
+    - docker login -u "${DOCKERHUB_USERNAME}" -p "${DOCKERHUB_TOKEN}"
     # Install QEMU emulation support in the kernel
     # See: https://docs.docker.com/buildx/working-with-buildx/#build-multi-platform-images
     - docker run --privileged --rm tonistiigi/binfmt --install all
@@ -21,7 +22,9 @@ build:
         UBUNTU_VERSION: "18.04"
         DOCKER_VERSION: "5:20.10.17~3-0~ubuntu-bionic"
         OUTPUT_TAG_NAME: "18.04"
-        EXTRA_BUILD_ARGS: "--tag ${CI_REGISTRY_IMAGE}:bionic"
+        EXTRA_BUILD_ARGS: >-
+          --tag ${CI_REGISTRY_IMAGE}:bionic
+          --tag thelab/dind:bionic
 
       - BASE_IMAGE: ubuntu
         UBUNTU_VERSION: "20.04"
@@ -29,6 +32,7 @@ build:
         OUTPUT_TAG_NAME: "20.04"
         EXTRA_BUILD_ARGS: >-
           --tag ${CI_REGISTRY_IMAGE}:focal
+          --tag thelab/dind:bionic:focal
           --push
 
       - BASE_IMAGE: ubuntu
@@ -38,4 +42,6 @@ build:
         EXTRA_BUILD_ARGS: >-
           --tag ${CI_REGISTRY_IMAGE}:jammy
           --tag ${CI_REGISTRY_IMAGE}:latest
+          --tag thelab/dind:jammy
+          --tag thelab/dind:latest
           --push
