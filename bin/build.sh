@@ -33,25 +33,19 @@ if [ -f "$ENV_FILE" ]; then
 fi
 
 
-# Create a buildx instance if one doesn't already exist
-if [ "$(docker buildx ls | grep docker-container  | wc -l)" -le "0" ]; then
-    echoAndRun docker buildx create --use;
-fi
-
-CACHE_FROM=""
-if [ ! -z "$CI_REGISTRY_IMAGE" ]; then
-    CACHE_FROM="--cache-from \"${CI_REGISTRY_IMAGE}:${OUTPUT_TAG_NAME}\""
-fi
-
-
 # Build image
-echoAndRun docker buildx build \
-    --platform "$PLATFORMS" \
+echoAndRun docker build \
     --pull \
     --build-arg BASE_IMAGE="$BASE_IMAGE" \
     --build-arg UBUNTU_VERSION="$UBUNTU_VERSION" \
     --build-arg DOCKER_VERSION="$DOCKER_VERSION" \
-    $CACHE_FROM \
     --tag "${CI_REGISTRY_IMAGE:-dind}:${OUTPUT_TAG_NAME}" \
-    $EXTRA_BUILD_ARGS \
     .
+
+docker push "${CI_REGISTRY_IMAGE:-dind}:${OUTPUT_TAG_NAME}"
+
+for TAG in $EXTRA_TAGS
+do
+    docker tag "${CI_REGISTRY_IMAGE:-dind}:${OUTPUT_TAG_NAME}" "${TAG}"
+    docker push "${TAG}"
+done
