@@ -15,16 +15,27 @@ build:
         UBUNTU_VERSION: "18.04"
         DOCKER_VERSION: "5:20.10.17~3-0~ubuntu-bionic"
         OUTPUT_TAG_NAME: "18.04"
-        EXTRA_TAGS: ${CI_REGISTRY_IMAGE}:bionic thelab/dind:bionic
+        EXTRA_TAGS: >-
+          ${CI_REGISTRY_IMAGE}:bionic
+          thelab/dind:18.04
+          thelab/dind:bionic
 
       - BASE_IMAGE: ubuntu
         UBUNTU_VERSION: "20.04"
-        DOCKER_VERSION: "5:20.10.17~3-0~ubuntu-focal"
+        DOCKER_VERSION: "5:23.0.5-1~ubuntu.20.04~focal"
         OUTPUT_TAG_NAME: "20.04"
-        EXTRA_TAGS: ${CI_REGISTRY_IMAGE}:focal thelab/dind:focal
+        EXTRA_TAGS: >-
+          ${CI_REGISTRY_IMAGE}:focal
+          thelab/dind:20.04
+          thelab/dind:focal
 
       - BASE_IMAGE: ubuntu
         UBUNTU_VERSION: "22.04"
-        DOCKER_VERSION: "5:20.10.17~3-0~ubuntu-jammy"
+        DOCKER_VERSION: "5:23.0.5-1~ubuntu.22.04~jammy"
         OUTPUT_TAG_NAME: "22.04"
-        EXTRA_TAGS: ${CI_REGISTRY_IMAGE}:jammy ${CI_REGISTRY_IMAGE}:latest thelab/dind:jammy thelab/dind:latest
+        EXTRA_TAGS: >-
+          ${CI_REGISTRY_IMAGE}:jammy
+          ${CI_REGISTRY_IMAGE}:latest
+          thelab/dind:22.04
+          thelab/dind:jammy
+          thelab/dind:latest
