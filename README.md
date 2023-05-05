@@ -23,7 +23,7 @@ You can also accomplish the same thing without the (rather slow)docker-in-docker
 
 ```toml
 [runners.docker]
-    image = "thelab/dind:latest"
+    image = "registry.gitlab.com/thelabnyc/dind:latest"
     privileged = false
     volumes = [
         "/var/run/docker.sock:/var/run/docker.sock",
