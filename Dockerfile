@@ -55,8 +55,3 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     && \
     rm -rf /var/lib/apt/lists/* && \
     unset DEBIAN_FRONTEND
-
-# =========================================================================
-# Install docker-compose v1
-# =========================================================================
-RUN python3 -m pip install 'docker-compose>=1.28.4,<2.0'
