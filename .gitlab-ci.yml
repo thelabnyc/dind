@@ -13,7 +13,7 @@ build:
     matrix:
       - BASE_IMAGE: ubuntu
         UBUNTU_VERSION: "18.04"
-        DOCKER_VERSION: "5:20.10.17~3-0~ubuntu-bionic"
+        DOCKER_VERSION: "5:24.0.2-1~ubuntu.18.04~bionic"
         OUTPUT_TAG_NAME: "18.04"
         EXTRA_TAGS: >-
           ${CI_REGISTRY_IMAGE}:bionic
@@ -22,7 +22,7 @@ build:
 
       - BASE_IMAGE: ubuntu
         UBUNTU_VERSION: "20.04"
-        DOCKER_VERSION: "5:23.0.5-1~ubuntu.20.04~focal"
+        DOCKER_VERSION: "5:24.0.6-1~ubuntu.20.04~focal"
         OUTPUT_TAG_NAME: "20.04"
         EXTRA_TAGS: >-
           ${CI_REGISTRY_IMAGE}:focal
@@ -31,7 +31,7 @@ build:
 
       - BASE_IMAGE: ubuntu
         UBUNTU_VERSION: "22.04"
-        DOCKER_VERSION: "5:23.0.5-1~ubuntu.22.04~jammy"
+        DOCKER_VERSION: "5:24.0.6-1~ubuntu.22.04~jammy"
         OUTPUT_TAG_NAME: "22.04"
         EXTRA_TAGS: >-
           ${CI_REGISTRY_IMAGE}:jammy
