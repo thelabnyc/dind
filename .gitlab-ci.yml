@@ -35,7 +35,16 @@ build:
         OUTPUT_TAG_NAME: "22.04"
         EXTRA_TAGS: >-
           ${CI_REGISTRY_IMAGE}:jammy
-          ${CI_REGISTRY_IMAGE}:latest
           thelab/dind:22.04
           thelab/dind:jammy
+
+      - BASE_IMAGE: ubuntu
+        UBUNTU_VERSION: "24.04"
+        DOCKER_VERSION: "5:27.2.0-1~ubuntu.24.04~noble"
+        OUTPUT_TAG_NAME: "24.04"
+        EXTRA_TAGS: >-
+          ${CI_REGISTRY_IMAGE}:noble
+          ${CI_REGISTRY_IMAGE}:latest
+          thelab/dind:24.04
+          thelab/dind:noble
           thelab/dind:latest

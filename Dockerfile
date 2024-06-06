@@ -1,5 +1,5 @@
 ARG BASE_IMAGE=ubuntu
-ARG UBUNTU_VERSION
+ARG UBUNTU_VERSION=24.04
 FROM ${BASE_IMAGE}:${UBUNTU_VERSION}
 
 ARG TIMEZONE="America/New_York"
@@ -20,18 +20,15 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         jq \
         python3 \
         python3-pip \
+        python3-flake8 \
+        python3-ipython \
+        python3-pip \
         software-properties-common \
         tzdata \
         unzip \
         wget \
     && \
     ln -s /usr/bin/python3 /usr/bin/python && \
-    pip3 install --upgrade \
-        flake8 \
-        ipython \
-        pip \
-        pytz \
-    && \
     rm -rf /var/lib/apt/lists/* && \
     unset DEBIAN_FRONTEND
 
