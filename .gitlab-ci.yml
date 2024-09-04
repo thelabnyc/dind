@@ -4,6 +4,7 @@ build:
     - docker:dind
 
   script:
+    - apk add bash
     - docker login -u "${CI_REGISTRY_USER}" -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
     - docker login -u "${DOCKERHUB_USERNAME}" -p "${DOCKERHUB_TOKEN}"
     # Build and push images
