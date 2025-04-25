@@ -1,4 +1,14 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["gitlab>thelabnyc/renovate-config:application"]
+    "extends": ["gitlab>thelabnyc/renovate-config:application"],
+    "customManagers": [
+        {
+            "customType": "regex",
+            "fileMatch": [".gitlab-ci.yml$"],
+            "matchStrings": ["UBUNTU_VERSION: \"(?<currentValue>.+)\""],
+            "datasourceTemplate": "docker",
+            "packageNameTemplate": "ubuntu",
+            "versioningTemplate": "docker"
+        }
+    ]
 }
