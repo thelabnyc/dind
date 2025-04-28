@@ -3,6 +3,15 @@ build:
   services:
     - docker:dind@sha256:f49e1c71b5d9f8ebe53715f78996ce42b8be4b1ec03875d187dfe3c03de1dc00
 
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      variables:
+        TAG_SUFFIX: "-mr${CI_MERGE_REQUEST_IID}"
+    # No suffix for default branch
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true"
+      variables:
+        TAG_SUFFIX: ""
+
   script:
     - apk add bash
     - if [ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]; then

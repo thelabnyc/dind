@@ -39,14 +39,14 @@ echoAndRun docker build \
     --build-arg BASE_IMAGE="$BASE_IMAGE" \
     --build-arg UBUNTU_VERSION="$UBUNTU_VERSION" \
     --build-arg DOCKER_VERSION="$DOCKER_VERSION" \
-    --tag "${CI_REGISTRY_IMAGE:-dind}:${OUTPUT_TAG_NAME}" \
+    --tag "${CI_REGISTRY_IMAGE:-dind}:${OUTPUT_TAG_NAME}${TAG_SUFFIX}" \
     .
 
 if [ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]; then
-    docker push "${CI_REGISTRY_IMAGE:-dind}:${OUTPUT_TAG_NAME}"
+    docker push "${CI_REGISTRY_IMAGE:-dind}:${OUTPUT_TAG_NAME}${TAG_SUFFIX}"
     for TAG in $EXTRA_TAGS
     do
-        docker tag "${CI_REGISTRY_IMAGE:-dind}:${OUTPUT_TAG_NAME}" "${TAG}"
-        docker push "${TAG}"
+        docker tag "${CI_REGISTRY_IMAGE:-dind}:${OUTPUT_TAG_NAME}${TAG_SUFFIX}" "${TAG}${TAG_SUFFIX}"
+        docker push "${TAG}${TAG_SUFFIX}"
     done
 fi
