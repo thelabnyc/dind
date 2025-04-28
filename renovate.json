@@ -10,5 +10,12 @@
             "packageNameTemplate": "ubuntu",
             "versioningTemplate": "docker"
         }
+    ],
+    "packageRules": [
+        {
+            "matchUpdateTypes": ["major"],
+            "matchPackageNames": ["ubuntu"],
+            "enabled": false
+        }
     ]
 }
