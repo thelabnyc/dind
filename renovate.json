@@ -1,11 +1,17 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["gitlab>thelabnyc/renovate-config:application"],
+    "extends": [
+        "gitlab>thelabnyc/renovate-config:application"
+    ],
     "customManagers": [
         {
             "customType": "regex",
-            "fileMatch": ["\\.gitlab-ci\\.yml$"],
-            "matchStrings": ["UBUNTU_VERSION: \"(?<currentValue>[^\\s@]+)(@(?<currentDigest>sha256:[0-9a-f]+))?\""],
+            "managerFilePatterns": [
+                "/\\.gitlab-ci\\.yml$/"
+            ],
+            "matchStrings": [
+                "UBUNTU_VERSION: \"(?<currentValue>[^\\s@]+)(@(?<currentDigest>sha256:[0-9a-f]+))?\""
+            ],
             "datasourceTemplate": "docker",
             "packageNameTemplate": "ubuntu",
             "versioningTemplate": "docker"
@@ -13,8 +19,12 @@
     ],
     "packageRules": [
         {
-            "matchUpdateTypes": ["major"],
-            "matchPackageNames": ["ubuntu"],
+            "matchUpdateTypes": [
+                "major"
+            ],
+            "matchPackageNames": [
+                "ubuntu"
+            ],
             "enabled": false
         }
     ]
