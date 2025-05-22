@@ -1,7 +1,7 @@
 build:
   image: docker:latest@sha256:1e9d444274b295261e49f96635f3d56a615cb3ae2021204160f8ac3cdf8f3b58
   services:
-    - docker:dind@sha256:754710537aaeed765ba5218c56fe3b6d02a6091201eb43fe67c3fbc758d53e7d
+    - docker:dind@sha256:e293493ad0083add2d14827c8b452b1da625745edd3cba27f154d0b11d0ec2d2
 
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
