@@ -24,7 +24,7 @@ build:
   parallel:
     matrix:
       - BASE_IMAGE: ubuntu
-        UBUNTU_VERSION: "22.04@sha256:59ccd419c0dc0edf9e3bff1a3b2b073ea15a2ce4bc45ce7c989278b225b09af3"
+        UBUNTU_VERSION: "22.04@sha256:1ec65b2719518e27d4d25f104d93f9fac60dc437f81452302406825c46fcc9cb"
         DOCKER_VERSION: "5:24.0.6-1~ubuntu.22.04~jammy"
         OUTPUT_TAG_NAME: "22.04.${CI_PIPELINE_IID}"
         EXTRA_TAGS: >-
