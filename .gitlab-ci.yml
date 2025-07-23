@@ -1,5 +1,5 @@
 build:
-  image: docker:latest@sha256:569bb59d63caccc51537695be44a905d22f5252525d0a84f7f2eab39ba81ed21
+  image: docker:latest@sha256:f341edb0395a4bc8a00629821a5fa48d6c0055d88901b10aac42787d6ba76eae
   services:
     - docker:dind@sha256:569bb59d63caccc51537695be44a905d22f5252525d0a84f7f2eab39ba81ed21
 
