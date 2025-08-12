@@ -31,7 +31,7 @@ build:
           thelab/dind:22.04.${CI_PIPELINE_IID}
 
       - BASE_IMAGE: ubuntu
-        UBUNTU_VERSION: "24.04@sha256:a08e551cb33850e4740772b38217fc1796a66da2506d312abe51acda354ff061"
+        UBUNTU_VERSION: "24.04@sha256:7c06e91f61fa88c08cc74f7e1b7c69ae24910d745357e0dfe1d2c0322aaf20f9"
         DOCKER_VERSION: "5:27.2.0-1~ubuntu.24.04~noble"
         OUTPUT_TAG_NAME: "24.04.${CI_PIPELINE_IID}"
         EXTRA_TAGS: >-
