@@ -48,6 +48,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         docker-ce=${DOCKER_VERSION} \
         docker-ce-cli=${DOCKER_VERSION} \
         containerd.io \
+        docker-buildx-plugin \
         docker-compose-plugin \
     && \
     rm -rf /var/lib/apt/lists/* && \
