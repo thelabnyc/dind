@@ -2,9 +2,9 @@ variables:
   FF_NETWORK_PER_BUILD: "true"
   
 build:
-  image: docker:latest@sha256:7370a6c49b7e708fb969b422dffe6cdd78a9f0ff5b3bfba0e0cddce736c49eaf
+  image: docker:latest@sha256:173f284a4299164772a90f52b373e73e087583c0963f1334c9995f190ef6f3f5
   services:
-    - docker:dind@sha256:7370a6c49b7e708fb969b422dffe6cdd78a9f0ff5b3bfba0e0cddce736c49eaf
+    - docker:dind@sha256:173f284a4299164772a90f52b373e73e087583c0963f1334c9995f190ef6f3f5
 
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
