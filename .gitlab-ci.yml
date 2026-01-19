@@ -27,14 +27,14 @@ build:
   parallel:
     matrix:
       - BASE_IMAGE: ubuntu
-        UBUNTU_VERSION: "22.04@sha256:aa6efdd564b660b6df78df8f4bca20dbb8338c46fb696d4b45c4a57b8f66679f"
+        UBUNTU_VERSION: "22.04@sha256:c7eb020043d8fc2ae0793fb35a37bff1cf33f156d4d4b12ccc7f3ef8706c38b1"
         DOCKER_VERSION: "5:24.0.6-1~ubuntu.22.04~jammy"
         OUTPUT_TAG_NAME: "22.04.${CI_PIPELINE_IID}"
         EXTRA_TAGS: >-
           thelab/dind:22.04.${CI_PIPELINE_IID}
 
       - BASE_IMAGE: ubuntu
-        UBUNTU_VERSION: "24.04@sha256:7a398144c5a2fa7dbd9362e460779dc6659bd9b19df50f724250c62ca7812eb3"
+        UBUNTU_VERSION: "24.04@sha256:cd1dba651b3080c3686ecf4e3c4220f026b521fb76978881737d24f200828b2b"
         DOCKER_VERSION: "5:27.2.0-1~ubuntu.24.04~noble"
         OUTPUT_TAG_NAME: "24.04.${CI_PIPELINE_IID}"
         EXTRA_TAGS: >-
