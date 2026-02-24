@@ -15,6 +15,18 @@
             "datasourceTemplate": "docker",
             "packageNameTemplate": "ubuntu",
             "versioningTemplate": "docker"
+        },
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/\\.gitlab-ci\\.yml$/"
+            ],
+            "matchStrings": [
+                "DOCKER_VERSION: \"(?<currentValue>[0-9.]+)\""
+            ],
+            "datasourceTemplate": "github-releases",
+            "packageNameTemplate": "moby/moby",
+            "extractVersionTemplate": "^v(?<version>.+)$"
         }
     ],
     "packageRules": [
@@ -24,6 +36,15 @@
             ],
             "matchPackageNames": [
                 "ubuntu"
+            ],
+            "enabled": false
+        },
+        {
+            "matchUpdateTypes": [
+                "major"
+            ],
+            "matchPackageNames": [
+                "moby/moby"
             ],
             "enabled": false
         }

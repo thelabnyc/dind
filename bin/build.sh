@@ -1,16 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
-
-GREEN='\033[0;32m'
-NC='\033[0m' # No Color
-
-# Echo the a command, then run it. Useful for debugging CI to see what command
-# is causing what output.
-echoAndRun () {
-    echo -e "${GREEN}$*${NC}"
-    "$@"
-}
+set -euxo pipefail
 
 # Function for loading vars from a .env file
 # See https://gist.github.com/mihow/9c7f559807069a03e302605691f85572
@@ -32,21 +22,33 @@ if [ -f "$ENV_FILE" ]; then
     loadEnv "$ENV_FILE"
 fi
 
+# Derive OUTPUT_TAG_NAME from UBUNTU_VERSION if not already set (e.g. from .env)
+if [ -z "${OUTPUT_TAG_NAME:-}" ]; then
+    UBUNTU_SHORT_VERSION="${UBUNTU_VERSION%%@*}"
+    if [ -n "${CI_PIPELINE_IID:-}" ]; then
+        OUTPUT_TAG_NAME="${UBUNTU_SHORT_VERSION}.${CI_PIPELINE_IID}"
+    else
+        OUTPUT_TAG_NAME="${UBUNTU_SHORT_VERSION}"
+    fi
+fi
+
+# When ARCH is set (CI), append it as a suffix to the tag
+ARCH_SUFFIX=""
+if [ -n "${ARCH:-}" ]; then
+    ARCH_SUFFIX="-${ARCH}"
+fi
+
+IMAGE_TAG="${CI_REGISTRY_IMAGE:-dind}:${OUTPUT_TAG_NAME}${TAG_SUFFIX:-}${ARCH_SUFFIX}"
 
 # Build image
-echoAndRun docker build \
+docker build \
     --pull \
     --build-arg BASE_IMAGE="$BASE_IMAGE" \
     --build-arg UBUNTU_VERSION="$UBUNTU_VERSION" \
     --build-arg DOCKER_VERSION="$DOCKER_VERSION" \
-    --tag "${CI_REGISTRY_IMAGE:-dind}:${OUTPUT_TAG_NAME}${TAG_SUFFIX}" \
+    --tag "$IMAGE_TAG" \
     .
 
-if [ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]; then
-    docker push "${CI_REGISTRY_IMAGE:-dind}:${OUTPUT_TAG_NAME}${TAG_SUFFIX}"
-    for TAG in $EXTRA_TAGS
-    do
-        docker tag "${CI_REGISTRY_IMAGE:-dind}:${OUTPUT_TAG_NAME}${TAG_SUFFIX}" "${TAG}${TAG_SUFFIX}"
-        docker push "${TAG}${TAG_SUFFIX}"
-    done
+if [ -n "${CI_COMMIT_BRANCH:-}" ] && [ "$CI_COMMIT_BRANCH" == "${CI_DEFAULT_BRANCH:-}" ]; then
+    docker push "$IMAGE_TAG"
 fi
