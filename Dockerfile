@@ -44,9 +44,11 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         > /etc/apt/sources.list.d/docker.list \
     && \
     apt-get update && \
+    DOCKER_APT_VERSION=$(apt-cache madison docker-ce | awk -v ver="$DOCKER_VERSION" '$3 ~ ver {print $3; exit}') && \
+    test -n "$DOCKER_APT_VERSION" || { echo "ERROR: No docker-ce package found matching ${DOCKER_VERSION}"; exit 1; } && \
     apt-get install -yq --no-install-recommends \
-        docker-ce=${DOCKER_VERSION} \
-        docker-ce-cli=${DOCKER_VERSION} \
+        docker-ce="${DOCKER_APT_VERSION}" \
+        docker-ce-cli="${DOCKER_APT_VERSION}" \
         containerd.io \
         docker-buildx-plugin \
         docker-compose-plugin \
