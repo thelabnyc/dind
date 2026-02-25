@@ -12,8 +12,6 @@ variables:
 
 build:
   image: docker:latest@sha256:8bcbad4b45f0bff9d3e809d85a7ac589390f0be8acbc526850c998c35c1243fd
-  services:
-    - docker:dind@sha256:8bcbad4b45f0bff9d3e809d85a7ac589390f0be8acbc526850c998c35c1243fd
   tags:
     - $RUNNER_TAG
 
@@ -29,7 +27,7 @@ build:
   script:
     - apk add bash
     - if [ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]; then
-        docker login -u "${CI_REGISTRY_USER}" -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}";
+      docker login -u "${CI_REGISTRY_USER}" -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}";
       fi
     - ./bin/build.sh
 
@@ -37,24 +35,23 @@ build:
     matrix:
       - <<: *v2204
         ARCH: amd64
-        RUNNER_TAG: tsi
+        RUNNER_TAG: thelab-amd64
       - <<: *v2204
         ARCH: arm64
-        RUNNER_TAG: tsi-arm64
+        RUNNER_TAG: thelab-arm64
       - <<: *v2404
         ARCH: amd64
-        RUNNER_TAG: tsi
+        RUNNER_TAG: thelab-amd64
       - <<: *v2404
         ARCH: arm64
-        RUNNER_TAG: tsi-arm64
+        RUNNER_TAG: thelab-arm64
 
 manifest:
   needs:
     - build
   image: docker:latest@sha256:8bcbad4b45f0bff9d3e809d85a7ac589390f0be8acbc526850c998c35c1243fd
-  services:
-    - docker:dind@sha256:8bcbad4b45f0bff9d3e809d85a7ac589390f0be8acbc526850c998c35c1243fd
-
+  tags:
+    - thelab-arm64
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true"
 
