@@ -17,6 +17,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         ca-certificates \
         curl \
         git \
+        gpg \
+        gpg-agent \
         jq \
         python3 \
         python3-pip \
