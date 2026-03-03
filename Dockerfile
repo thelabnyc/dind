@@ -55,3 +55,20 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     && \
     rm -rf /var/lib/apt/lists/* && \
     unset DEBIAN_FRONTEND
+
+# =========================================================================
+# Install Mise
+# =========================================================================
+RUN export DEBIAN_FRONTEND=noninteractive && \
+    install -dm 755 /etc/apt/keyrings && \
+    wget -qO - "https://mise.jdx.dev/gpg-key.pub" \
+        | gpg --dearmor -o "/etc/apt/keyrings/mise-archive-keyring.gpg" \
+    && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/mise-archive-keyring.gpg] https://mise.jdx.dev/deb stable main" \
+        > /etc/apt/sources.list.d/mise.list \
+    && \
+    apt-get update && \
+    apt-get install -y mise && \
+    echo 'eval "$(mise activate bash)"' >> ~/.bashrc && \
+    rm -rf /var/lib/apt/lists/* && \
+    unset DEBIAN_FRONTEND
