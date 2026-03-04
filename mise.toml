@@ -1,0 +1,12 @@
+[env]
+BASE_IMAGE = "ubuntu"
+UBUNTU_VERSION = "24.04"
+DOCKER_VERSION = "27.2.0"
+
+[tasks.build]
+description = "Build the Docker image"
+run = "./bin/build.sh"
+
+[tasks."push:manifest"]
+description = "Push multi-arch manifest (CI only)"
+run = "./bin/push-manifest.sh"

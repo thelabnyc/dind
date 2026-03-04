@@ -2,27 +2,7 @@
 
 set -euxo pipefail
 
-# Function for loading vars from a .env file
-# See https://gist.github.com/mihow/9c7f559807069a03e302605691f85572
-loadEnv () {
-    local envFile="${1?Missing environment file}"
-    local environmentAsArray variableDeclaration
-    mapfile environmentAsArray < <(
-        grep --invert-match '^#' "${envFile}" \
-            | grep --invert-match '^\s*$'
-    ) # Uses grep to remove commented and blank lines
-    for variableDeclaration in "${environmentAsArray[@]}"; do
-        export "${variableDeclaration//[$'\r\n']}" # The substitution removes the line breaks
-    done
-}
-
-# Load env vars from .env file (if one exists)
-ENV_FILE=".env"
-if [ -f "$ENV_FILE" ]; then
-    loadEnv "$ENV_FILE"
-fi
-
-# Derive OUTPUT_TAG_NAME from UBUNTU_VERSION if not already set (e.g. from .env)
+# Derive OUTPUT_TAG_NAME from UBUNTU_VERSION if not already set
 if [ -z "${OUTPUT_TAG_NAME:-}" ]; then
     UBUNTU_SHORT_VERSION="${UBUNTU_VERSION%%@*}"
     if [ -n "${CI_PIPELINE_IID:-}" ]; then
