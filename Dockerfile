@@ -34,6 +34,9 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/* && \
     unset DEBIAN_FRONTEND
 
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:0.10.8@sha256:88234bc9e09c2b2f6d176a3daf411419eb0370d450a08129257410de9cfafd2a /uv /uvx /bin/
+
 # =========================================================================
 # Install Docker client
 # =========================================================================
