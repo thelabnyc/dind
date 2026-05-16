@@ -4,14 +4,14 @@ variables:
 
 .versions:
   v2204: &v2204
-    UBUNTU_VERSION: "22.04@sha256:962f6cadeae0ea6284001009daa4cc9a8c37e75d1f5191cf0eb83fe565b63dd7"
+    UBUNTU_VERSION: "22.04@sha256:13861e4d4047fbbe1fc1737d690dffe8d31c4524c8f203beb0c9bb1ddda35d3c"
     DOCKER_VERSION: "24.0.9"
   v2404: &v2404
     UBUNTU_VERSION: "24.04@sha256:c4a8d5503dfb2a3eb8ab5f807da5bc69a85730fb49b5cfca2330194ebcc41c7b"
     DOCKER_VERSION: "27.5.1"
 
 build:
-  image: docker:latest@sha256:685b91dca8eab7de1dce1c303dbb7a763e4082d6a60db10968adf3295fbd2495
+  image: docker:latest@sha256:8e3fae900cbfbdc14e8abca89a9e44363065cb535f34a09283c59cc0dde2de20
   tags:
     - $RUNNER_TAG
 
@@ -49,7 +49,7 @@ build:
 manifest:
   needs:
     - build
-  image: docker:latest@sha256:685b91dca8eab7de1dce1c303dbb7a763e4082d6a60db10968adf3295fbd2495
+  image: docker:latest@sha256:8e3fae900cbfbdc14e8abca89a9e44363065cb535f34a09283c59cc0dde2de20
   tags:
     - thelab-arm64
   rules:
