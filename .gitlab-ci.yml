@@ -11,7 +11,7 @@ variables:
     DOCKER_VERSION: "27.5.1"
 
 build:
-  image: docker:latest@sha256:d0c942e5e2c14a74da706cff670ea2449fb57f9bc6abae7164461d0c6322b8b4
+  image: docker:latest@sha256:eed377f3ce14afda560e742c5b3ae446df1ce00a16e1beab2ac6c78c1477fe85
   tags:
     - $RUNNER_TAG
 
@@ -49,7 +49,7 @@ build:
 manifest:
   needs:
     - build
-  image: docker:latest@sha256:d0c942e5e2c14a74da706cff670ea2449fb57f9bc6abae7164461d0c6322b8b4
+  image: docker:latest@sha256:eed377f3ce14afda560e742c5b3ae446df1ce00a16e1beab2ac6c78c1477fe85
   tags:
     - thelab-arm64
   rules:
