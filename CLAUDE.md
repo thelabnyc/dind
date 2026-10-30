@@ -20,7 +20,7 @@ make build
 ## CI/CD
 
 GitLab CI (`.gitlab-ci.yml`) builds two matrix variants:
-- **Ubuntu 24.04** with Docker 27.x
+- **Ubuntu 24.04** with Docker 29.x
 - **Ubuntu 26.04** with Docker 29.x (tagged as `latest`)
 
 On the default branch, images are pushed to both the GitLab registry and Docker Hub (`thelab/dind`). MR builds get a `-mr<IID>` tag suffix.
